@@ -187,5 +187,6 @@ def validate(space: dict, poses: dict, aisle_width: float | None = None) -> dict
         "soft": soft,
         "metrics": metrics,
         "zones": {k: g.coords(v) for k, v in zones.items()},
+        "interference": g.coords(interference),
         "doorSwings": {d.id: g.coords(d.swing) for d in doors},
     }
