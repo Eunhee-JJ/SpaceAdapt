@@ -70,7 +70,9 @@ def build_guide(space: dict, poses: dict, baseline: dict | None = None) -> list[
         rot = (b.get("rotation", 0) - a.get("rotation", 0)) % 360
         parts = [f"{josa(name, '을/를')} {_where(room, f, b)}으로 옮기세요" if dist >= 0.05 else f"{josa(name, '을/를')} 제자리에서"]
         if rot:
-            parts.append(f"시계 방향으로 {rot}° 돌려 놓으세요" if rot != 180 else "반대 방향으로 돌려 놓으세요")
+            parts.append("반대 방향으로 돌려 놓으세요" if rot == 180
+                         else f"반시계 방향으로 {360 - rot}° 돌려 놓으세요" if rot > 180
+                         else f"시계 방향으로 {rot}° 돌려 놓으세요")
         cautions = []
         if TYPE_WEIGHT.get(f["type"], 1) >= 3:
             cautions.append("무거운 가구라 두 사람이 옮기는 것을 권장합니다.")

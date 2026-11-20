@@ -1,6 +1,6 @@
 """FastAPI app (요구사항정의서 §11, v4: in-memory sessions, local demo).
 
-Run: uv run uvicorn spaceadapt.api:app --reload --port 8000
+Run: uv run uvicorn spaceadapt.api:app --reload --port 8010
 """
 
 from __future__ import annotations
