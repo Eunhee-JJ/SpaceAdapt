@@ -1,0 +1,239 @@
+{
+  "rooms": {
+    "room-a": {
+      "furnitureRecall": 1.0,
+      "cueRecall": 1.0,
+      "cuePrecision": 1.0,
+      "vlmMs": 10377,
+      "slotsCoveredWithCues": 5,
+      "slotsCoveredWithoutCues": 3,
+      "draft": {
+        "furniture": [
+          {
+            "type": "bed",
+            "count": 1
+          },
+          {
+            "type": "desk",
+            "count": 1
+          },
+          {
+            "type": "chair",
+            "count": 1
+          },
+          {
+            "type": "wardrobe",
+            "count": 1
+          },
+          {
+            "type": "storage",
+            "count": 1
+          }
+        ],
+        "lifeCues": [
+          {
+            "evidence": "침대와 책상이 붙어 있음",
+            "objectType": "bed",
+            "slot": "sleepWorkSeparation",
+            "value": true,
+            "status": "estimated"
+          },
+          {
+            "evidence": "옷장에 옷이 많아 보임",
+            "objectType": "storage",
+            "slot": "mainPain",
+            "value": "storage",
+            "status": "estimated"
+          },
+          {
+            "evidence": "책상 위에 모니터 두 대",
+            "objectType": "desk",
+            "slot": "primaryActivity",
+            "value": "work",
+            "status": "estimated"
+          }
+        ],
+        "source": "vlm",
+        "model": "mlx-community/Qwen3-VL-8B-Instruct-4bit",
+        "elapsedMs": 10377
+      },
+      "baseline": {
+        "hard": 3,
+        "pref": 0.0,
+        "total": 1.2
+      },
+      "preference": {
+        "hard": 0,
+        "pref": 0.667,
+        "total": 62.9,
+        "moved": 5
+      },
+      "minimal_move": {
+        "hard": 0,
+        "pref": 0.667,
+        "total": 34.8,
+        "moved": 5
+      },
+      "P2": true,
+      "validateP95ms": 0.9
+    },
+    "room-b": {
+      "furnitureRecall": 0.75,
+      "cueRecall": 0.5,
+      "cuePrecision": 0.333,
+      "vlmMs": 10780,
+      "slotsCoveredWithCues": 5,
+      "slotsCoveredWithoutCues": 3,
+      "draft": {
+        "furniture": [
+          {
+            "type": "bed",
+            "count": 1
+          },
+          {
+            "type": "desk",
+            "count": 1
+          },
+          {
+            "type": "chair",
+            "count": 1
+          },
+          {
+            "type": "wardrobe",
+            "count": 1
+          }
+        ],
+        "lifeCues": [
+          {
+            "evidence": "침대 위에 수면 안대와 요가매트",
+            "objectType": "bed",
+            "slot": "primaryActivity",
+            "value": "sleep",
+            "status": "estimated"
+          },
+          {
+            "evidence": "침대와 책상이 마주 보고 있음",
+            "objectType": "bed",
+            "slot": "sleepWorkSeparation",
+            "value": true,
+            "status": "estimated"
+          },
+          {
+            "evidence": "침대가 문 바로 옆에 있음",
+            "objectType": "bed",
+            "slot": "mainPain",
+            "value": "sleep",
+            "status": "estimated"
+          }
+        ],
+        "source": "vlm",
+        "model": "mlx-community/Qwen3-VL-8B-Instruct-4bit",
+        "elapsedMs": 10780
+      },
+      "baseline": {
+        "hard": 2,
+        "pref": 0.0,
+        "total": 2.2
+      },
+      "preference": {
+        "hard": 0,
+        "pref": 1.0,
+        "total": 87.2,
+        "moved": 4
+      },
+      "minimal_move": {
+        "hard": 0,
+        "pref": 1.0,
+        "total": 80.0,
+        "moved": 2
+      },
+      "P2": true,
+      "validateP95ms": 0.6
+    },
+    "room-c": {
+      "furnitureRecall": 0.8,
+      "cueRecall": 0.5,
+      "cuePrecision": 0.333,
+      "vlmMs": 11397,
+      "slotsCoveredWithCues": 5,
+      "slotsCoveredWithoutCues": 3,
+      "draft": {
+        "furniture": [
+          {
+            "type": "bed",
+            "count": 1
+          },
+          {
+            "type": "desk",
+            "count": 1
+          },
+          {
+            "type": "chair",
+            "count": 1
+          },
+          {
+            "type": "wardrobe",
+            "count": 1
+          },
+          {
+            "type": "table",
+            "count": 1
+          }
+        ],
+        "lifeCues": [
+          {
+            "evidence": "침대와 책상이 서로 마주 보는 배치",
+            "objectType": "desk",
+            "slot": "sleepWorkSeparation",
+            "value": true,
+            "status": "estimated"
+          },
+          {
+            "evidence": "침대가 문 옆에 위치해 통로가 좁아 보임",
+            "objectType": "bed",
+            "slot": "mainPain",
+            "value": "aisle",
+            "status": "estimated"
+          },
+          {
+            "evidence": "방에 취미 도구 없음",
+            "objectType": null,
+            "slot": "hobbySpace",
+            "value": true,
+            "status": "estimated"
+          }
+        ],
+        "source": "vlm",
+        "model": "mlx-community/Qwen3-VL-8B-Instruct-4bit",
+        "elapsedMs": 11397
+      },
+      "baseline": {
+        "hard": 2,
+        "pref": 0.0,
+        "total": 10.9
+      },
+      "preference": {
+        "hard": 0,
+        "pref": 1.0,
+        "total": 90.1,
+        "moved": 2
+      },
+      "minimal_move": {
+        "hard": 0,
+        "pref": 1.0,
+        "total": 85.8,
+        "moved": 1
+      },
+      "P2": true,
+      "validateP95ms": 0.7
+    }
+  },
+  "summary": {
+    "P2_allRooms": true,
+    "P3_maxP95ms": 0.9,
+    "P4_meanFurnitureRecall": 0.85,
+    "P8_meanCueRecall": 0.667,
+    "P8_extraSlotsPer3Questions": 2,
+    "source": "vlm"
+  }
+}

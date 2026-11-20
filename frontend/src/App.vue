@@ -6,7 +6,7 @@ import ResultPanel from './components/ResultPanel.vue'
 
 const clone = (o) => JSON.parse(JSON.stringify(o))
 
-// select → edit (correct the current layout) → [questions: Sunday] → compare → guide
+// select → edit (correct the current layout) → ask (photo cues + questions) → compare → guide
 const step = ref('select')
 const rooms = ref([])
 const err = ref('')
@@ -17,6 +17,12 @@ const space = ref(null)
 const poses = ref({})
 const check = ref(null) // {validation, score} for the plan on screen
 const selected = ref(null)
+
+const draft = ref(null)       // VLM result
+const qs = ref([])            // questions
+const cueOk = ref({})         // index → accepted
+const picks = ref({})         // slot → value | value[]
+const analyzing = ref(false)
 
 const layouts = ref(null)
 const tab = ref('preference')
@@ -68,12 +74,46 @@ function rotate(deg) {
 
 const selectedItem = computed(() => space.value?.furniture.find((f) => f.id === selected.value))
 
-function makeLayouts() {
+function goAsk() {
   run(async () => {
     const corrected = clone(space.value)
     corrected.baselineLayout.poses = clone(poses.value)
     await api.putSpace(sid.value, corrected)
     space.value = corrected
+    step.value = 'ask'
+    await analyze('auto')
+  })
+}
+
+async function analyze(mode) {
+  analyzing.value = true
+  draft.value = null
+  try {
+    draft.value = await api.analyzePhoto(sid.value, mode)
+    qs.value = (await api.questions(sid.value)).questions
+    cueOk.value = {}
+    picks.value = {}
+    for (const q of qs.value) if (q.type === 'confirm') q.items.forEach((it) => (cueOk.value[it.index] = true))
+  } finally {
+    analyzing.value = false
+  }
+}
+
+function pick(q, v) {
+  if (!q.multi) { picks.value = { ...picks.value, [q.slot]: v }; return }
+  if (v === null) { picks.value = { ...picks.value, [q.slot]: [] }; return }
+  const cur = new Set(picks.value[q.slot] || [])
+  cur.has(v) ? cur.delete(v) : cur.add(v)
+  picks.value = { ...picks.value, [q.slot]: [...cur] }
+}
+const isPicked = (q, v) => (q.multi ? (picks.value[q.slot] || []).includes(v) || (v === null && picks.value[q.slot]?.length === 0) : picks.value[q.slot] === v)
+
+function makeLayouts() {
+  run(async () => {
+    const confirm = qs.value.find((q) => q.type === 'confirm')
+    const cues = confirm ? confirm.items.map((it) => ({ slot: it.slot, value: it.value, accepted: !!cueOk.value[it.index] })) : []
+    const answers = Object.entries(picks.value).map(([slot, value]) => ({ slot, value }))
+    space.value = (await api.answer(sid.value, cues, answers)).space
     layouts.value = await api.layouts(sid.value)
     step.value = 'compare'
     showTab('preference')
@@ -105,7 +145,7 @@ function name(id) {
 <template>
   <header>
     <b>SpaceAdapt</b>
-    <span v-if="step !== 'select'" class="crumb">{{ { edit: '현재 배치 보정', compare: '배치안 비교', guide: '이동 가이드' }[step] }}</span>
+    <span v-if="step !== 'select'" class="crumb">{{ { edit: '현재 배치 보정', ask: '생활 질문', compare: '배치안 비교', guide: '이동 가이드' }[step] }}</span>
   </header>
   <p v-if="err" class="err">{{ err }}</p>
 
@@ -131,7 +171,38 @@ function name(id) {
       <button class="mini" :disabled="!selected" @click="rotate(90)">⟳ 90°</button>
     </div>
     <ResultPanel v-if="check" :validation="check.validation" />
-    <button class="btn" :disabled="busy" @click="makeLayouts">{{ busy ? '배치안 계산 중…' : '배치안 만들기' }}</button>
+    <button class="btn" :disabled="busy" @click="goAsk">다음: 생활 질문</button>
+  </section>
+
+  <!-- 생활 단서 확인 + 질문 -->
+  <section v-if="step === 'ask'" class="pad">
+    <img v-if="space.image" class="photo" :src="api.imageUrl(space.id)" alt="방 사진" />
+    <div v-if="analyzing" class="loading">
+      <b>로컬 AI가 사진을 읽는 중…</b>
+      <p class="muted">사진은 이 컴퓨터 밖으로 나가지 않습니다. 10~20초 걸려요.</p>
+      <button class="mini" @click="analyze('mock')">기다리지 않고 예시 결과로 진행</button>
+    </div>
+    <template v-else-if="draft">
+      <p class="muted small">
+        {{ draft.source === 'vlm' ? `Qwen3-VL 로컬 분석 · ${(draft.elapsedMs / 1000).toFixed(1)}초` : '예시 결과(목 데이터)' }}
+        · 찾은 가구: {{ draft.furniture.map((f) => LABEL[f.type] || f.type).join(', ') }}
+      </p>
+      <div v-for="(q, qi) in qs" :key="q.id" class="q">
+        <b>Q{{ qi + 1 }}. {{ q.text }}</b>
+        <template v-if="q.type === 'confirm'">
+          <label v-for="it in q.items" :key="it.index" class="cue" :class="{ off: !cueOk[it.index] }">
+            <input v-model="cueOk[it.index]" type="checkbox" />
+            <span><small>📷 {{ it.evidence }}</small>{{ it.meaning }}</span>
+          </label>
+        </template>
+        <div v-else class="opts">
+          <button v-for="o in q.options" :key="String(o.value)" :class="{ on: isPicked(q, o.value) }" @click="pick(q, o.value)">
+            {{ o.label }}
+          </button>
+        </div>
+      </div>
+      <button class="btn" :disabled="busy" @click="makeLayouts">{{ busy ? '배치안 계산 중…' : '배치안 만들기' }}</button>
+    </template>
   </section>
 
   <!-- 배치안 비교 -->
@@ -190,6 +261,16 @@ h2 { margin: 0; font-size: 20px; color: var(--navy); }
 .tabs button { background: var(--card); color: var(--navy); padding: 10px 4px; font-weight: 700; font-size: 14px; }
 .tabs button small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
 .tabs button.on { background: var(--accent); color: #fff; } .tabs button.on small { color: #fff; }
+.photo { width: 100%; border-radius: 10px; aspect-ratio: 4 / 3; object-fit: cover; }
+.loading { background: var(--card); border-radius: 10px; padding: 14px; display: grid; gap: 6px; }
+.q { display: grid; gap: 8px; }
+.cue { display: flex; gap: 10px; align-items: flex-start; background: var(--accent-soft); border-radius: 10px; padding: 10px; font-size: 15px; }
+.cue small { display: block; color: var(--muted); font-size: 12px; }
+.cue.off { background: var(--card); color: var(--muted); text-decoration: line-through; }
+.cue input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); }
+.opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.opts button { background: var(--card); color: var(--navy); padding: 9px 12px; font-size: 14px; }
+.opts button.on { background: var(--navy); color: #fff; }
 .steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
 .steps li { background: var(--card); border-radius: 10px; padding: 10px 12px; }
 .steps li.temp { background: var(--warn-soft); }

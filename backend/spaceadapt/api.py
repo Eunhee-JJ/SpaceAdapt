@@ -15,8 +15,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
+from . import vlm
 from .guide import build_guide
 from .planner import plan_all
+from .questions import apply_answers, build_questions
 from .score import score
 from .validate import validate
 
@@ -116,3 +118,45 @@ def make_layouts(sid: str):
 @app.post("/sessions/{sid}/guide")
 def guide(sid: str, body: Poses):
     return {"steps": build_guide(_session(sid)["space"], body.poses)}
+
+
+class Answers(BaseModel):
+    cues: list[dict] = []      # [{slot, value, accepted}]
+    answers: list[dict] = []   # [{slot, value}]
+
+
+@app.post("/sessions/{sid}/draft/photo")
+def draft_photo(sid: str, mode: str = "auto"):
+    """FR-05: photo → furniture + life cues. mode=auto|vlm|mock; auto falls back to mock on failure (NFR-03)."""
+    s = _session(sid)
+    space = s["space"]
+    res = None
+    error = None
+    if mode != "mock" and not vlm.is_mock() and space.get("image"):
+        try:
+            res = vlm.analyze(str(ROOT / space["image"]))
+        except Exception as e:  # model missing, OOM, bad JSON → fall back
+            if mode == "vlm":
+                raise HTTPException(502, f"VLM failed: {e}")
+            error = str(e)
+    if res is None:
+        res = vlm.mock_from_truth(space)
+        if error:
+            res["fallbackReason"] = error
+    s["draft"] = res
+    return res
+
+
+@app.get("/sessions/{sid}/questions")
+def questions(sid: str):
+    s = _session(sid)
+    cues = (s.get("draft") or {}).get("lifeCues", [])
+    return {"questions": build_questions(s["space"], cues)}
+
+
+@app.post("/sessions/{sid}/answers")
+def answers(sid: str, body: Answers):
+    s = _session(sid)
+    apply_answers(s["space"], body.cues, body.answers)
+    s["layouts"] = None
+    return {"space": _public(s["space"])}

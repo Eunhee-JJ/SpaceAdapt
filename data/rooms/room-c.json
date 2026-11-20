@@ -157,12 +157,12 @@
         ]
       },
       {
-        "evidence": "방 가운데 바퀴 달린 수납 카트",
+        "evidence": "방 가운데를 막은 바퀴 달린 수납 카트",
         "objectIds": [
           "storage-1"
         ],
-        "slot": "moveTolerance",
-        "value": "low"
+        "slot": "mainPain",
+        "value": "aisle"
       }
     ]
   },

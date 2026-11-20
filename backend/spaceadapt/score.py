@@ -92,6 +92,12 @@ def preference_goals(space: dict, poses: dict, result: dict) -> list[tuple[str, 
                           + [p for _, p in g.fixture_polygons(room)]))
         goals.append(("요가매트를 펼 바닥(180×70) 확보", _has_open_floor(free)))
 
+    if slots.get("mainPain") == "aisle":
+        goals.append(("방 대부분을 막힘없이 지나다닐 수 있음", result["metrics"]["reachableRatio"] >= 0.85))
+    if slots.get("mainPain") == "workspace" and desk:
+        blocked = {v["objects"][0] for v in result["hard"]}
+        seen = any(v["type"] == "window_blocked" and desk["id"] in v["objects"] for v in result["soft"])
+        goals.append(("책상 앞 작업 공간이 비어 있음", desk["id"] not in blocked and not seen))
     if slots.get("mainPain") == "storage":
         blocked = {v["objects"][0] for v in result["hard"] if v["type"] in ("clearance_blocked", "aisle_unreachable")}
         storage_ids = [f["id"] for f in space["furniture"] if f["type"] in ("wardrobe", "storage")]
@@ -103,7 +109,10 @@ def score(space: dict, poses: dict, profile: str = "preference", result: dict | 
     result = result or validate(space, poses)
     baseline = space["baselineLayout"]["poses"]
     room_area = g.room_polygon(space["room"]).area
-    w = PROFILES[profile]
+    w = dict(PROFILES[profile])
+    tol = (space.get("preferences", {}).get("slots", {}).get("moveTolerance") or {})
+    if (tol.get("value") if isinstance(tol, dict) else tol) == "low":
+        w["move"] *= 2  # user can only move light furniture
 
     goals = preference_goals(space, poses, result)
     pref = sum(ok for _, ok in goals) / len(goals) if goals else 1.0

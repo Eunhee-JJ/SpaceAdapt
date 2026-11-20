@@ -18,6 +18,10 @@ export const api = {
   validate: (sid, poses, profile = 'preference') => call('POST', `/sessions/${sid}/validate`, { poses, profile }),
   layouts: (sid) => call('POST', `/sessions/${sid}/layouts`),
   guide: (sid, poses) => call('POST', `/sessions/${sid}/guide`, { poses }),
+  getSession: (sid) => call('GET', `/sessions/${sid}`),
+  analyzePhoto: (sid, mode = 'auto') => call('POST', `/sessions/${sid}/draft/photo?mode=${mode}`),
+  questions: (sid) => call('GET', `/sessions/${sid}/questions`),
+  answer: (sid, cues, answers) => call('POST', `/sessions/${sid}/answers`, { cues, answers }),
 }
 
 export const LABEL = {
