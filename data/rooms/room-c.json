@@ -1,0 +1,171 @@
+{
+  "id": "room-c",
+  "title": "이동 최소 기숙사",
+  "scenario": "move",
+  "room": {
+    "unit": "cm",
+    "polygon": [
+      [
+        0,
+        0
+      ],
+      [
+        260,
+        0
+      ],
+      [
+        260,
+        360
+      ],
+      [
+        0,
+        360
+      ]
+    ],
+    "openings": [
+      {
+        "id": "door-1",
+        "type": "door",
+        "wall": 2,
+        "offset": 90,
+        "width": 80,
+        "hinge": "right",
+        "swing": "in"
+      },
+      {
+        "id": "win-1",
+        "type": "window",
+        "wall": 0,
+        "offset": 70,
+        "width": 120,
+        "sillHeight": 90
+      }
+    ],
+    "fixtures": []
+  },
+  "furniture": [
+    {
+      "id": "bed-1",
+      "type": "bed",
+      "width": 90,
+      "depth": 200,
+      "height": 45,
+      "movable": true,
+      "attributes": [],
+      "clearance": {
+        "right": 50
+      }
+    },
+    {
+      "id": "desk-1",
+      "type": "desk",
+      "width": 100,
+      "depth": 55,
+      "height": 73,
+      "movable": true,
+      "attributes": [],
+      "clearance": {
+        "front": 70
+      }
+    },
+    {
+      "id": "chair-1",
+      "type": "chair",
+      "width": 45,
+      "depth": 45,
+      "height": 85,
+      "movable": true,
+      "attributes": [],
+      "pairedWith": "desk-1",
+      "clearance": {}
+    },
+    {
+      "id": "wardrobe-1",
+      "type": "wardrobe",
+      "width": 80,
+      "depth": 55,
+      "height": 190,
+      "movable": false,
+      "attributes": [],
+      "clearance": {
+        "front": 60
+      }
+    },
+    {
+      "id": "storage-1",
+      "type": "storage",
+      "width": 120,
+      "depth": 40,
+      "height": 75,
+      "movable": true,
+      "attributes": [
+        "wheels"
+      ],
+      "clearance": {
+        "front": 50
+      }
+    }
+  ],
+  "baselineLayout": {
+    "poses": {
+      "bed-1": {
+        "x": 45,
+        "y": 120,
+        "rotation": 0
+      },
+      "desk-1": {
+        "x": 210,
+        "y": 27.5,
+        "rotation": 0
+      },
+      "chair-1": {
+        "x": 210,
+        "y": 85,
+        "rotation": 0
+      },
+      "wardrobe-1": {
+        "x": 232.5,
+        "y": 300,
+        "rotation": 90
+      },
+      "storage-1": {
+        "x": 145,
+        "y": 240,
+        "rotation": 0
+      }
+    }
+  },
+  "preferences": {
+    "activityWeights": {
+      "sleep": 3,
+      "work": 3,
+      "hobby": 1
+    },
+    "minimumAisleWidth": 60,
+    "slots": {}
+  },
+  "truth": {
+    "lifeCues": [
+      {
+        "evidence": "벽을 차지한 대형 붙박이형 옷장",
+        "objectIds": [
+          "wardrobe-1"
+        ],
+        "slot": "fixedItems",
+        "value": [
+          "wardrobe-1"
+        ]
+      },
+      {
+        "evidence": "방 가운데 바퀴 달린 수납 카트",
+        "objectIds": [
+          "storage-1"
+        ],
+        "slot": "moveTolerance",
+        "value": "low"
+      }
+    ]
+  },
+  "image": "data/images/room-c.png",
+  "imageSource": "FLUX.1-schnell (Apache-2.0) via mflux, scripts/gen_room_images.sh"
+}
