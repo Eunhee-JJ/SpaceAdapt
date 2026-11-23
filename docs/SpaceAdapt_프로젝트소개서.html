@@ -107,9 +107,9 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
   <div class="slogan">사진 속 생활 흔적을 읽고, 실제 치수로 검증된 가구 배치를 제안하는<br>청년 1인 가구 AI 공간 플래너</div>
   <div class="meta">
     <div><span>팀명</span><b>Rooming (루밍)</b></div>
-    <div><span>대표자</span><b class="todo">[작성] 이름</b></div>
-    <div><span>팀원</span><b class="todo">[작성] 이름 / 이름 / 이름</b></div>
-    <div><span>제출일</span><b>2026. 11. <span class="todo" style="display:inline;font-size:20px;color:#3d2f00;margin:0">__</span>.</b></div>
+    <div><span>대표자</span><b>정은희</b></div>
+    <div><span>팀원</span><b>1인 팀</b></div>
+    <div><span>제출일</span><b>2026. 11. 23.</b></div>
   </div>
   <div class="foot"><span>2026 대한민국 청년 CAREER FAIR AI 해커톤</span><span></span></div>
 </section>
@@ -132,7 +132,7 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
     </div>
     <div class="card" style="height:250px">
       <h3><span class="num-badge">3</span>구현 현황</h3>
-      <p>요구사항·데이터 모델·API 계약 설계 완료. 2D 편집기, 검증 엔진, 배치 생성, VLM·질문 에이전트를 해커톤 기간 중 개발한다. <span class="todo">[제출 전 실제 진척으로 갱신]</span></p>
+      <p>사진 → 로컬 VLM 단서 추출 → 확인 질문 → 배치안 2개 비교 → 터치 수정·재검증 → 이동 가이드까지 전체 흐름 동작. 합성 방 3종 모두 하드 위반 0건, 재검증 p95 1ms 미만.</p>
     </div>
   </div>
   <div class="kw">키워드 &nbsp;<span>#청년1인가구</span><span>#VLM</span><span>#AI에이전트</span><span>#제약기반배치</span><span>#공간최적화</span><span>#모바일</span></div>
@@ -197,7 +197,7 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
   <div class="grid g2" style="margin-bottom:14px">
     <div class="card" style="height:186px">
       <h3>해결 방안 개요</h3>
-      <p>측정은 측정 도구에, 해석은 AI에 맡긴다. 방 치수는 사용자 입력·RoomPlan 스캔으로 확정하고, AI는 사진에서 <span class="strong">방이 어떻게 쓰이고 있는지</span>를 읽어 질문으로 확인한다. 최종 배치는 결정적 공간 엔진이 제약을 보장한다.</p>
+      <p>측정은 측정 도구에, 해석은 AI에 맡긴다. 방 치수는 사용자 입력으로 확정하고, AI는 사진에서 <span class="strong">방이 어떻게 쓰이고 있는지</span>를 읽어 질문으로 확인한다. 최종 배치는 결정적 공간 엔진이 제약을 보장한다.</p>
     </div>
     <div class="card" style="height:186px;border:2px solid var(--accent);background:#fff">
       <h3>왜 AI여야 하는가</h3>
@@ -209,13 +209,13 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
     <table class="t" style="margin-bottom:12px;font-size:14.5px">
       <tr><th style="width:190px">구성</th><th>역할</th><th style="width:250px">출력</th></tr>
       <tr><td class="k">① VLM</td><td>가구 종류와 함께 생활 흔적·가구 속성(접이식, 바퀴, 과적재)을 읽는다</td><td>생활 단서 목록 (추정값)</td></tr>
-      <tr><td class="k">② LLM 에이전트</td><td>단서 → 불편 가설 → 정보가치가 높은 확인 질문 선택 → 답변을 구조화</td><td>활동 가중치 · 하드 제약</td></tr>
+      <tr><td class="k">② 확인 질문</td><td>VLM 단서를 확인 카드로 제시 → 남은 질문은 배치 영향이 큰 항목 순 선택 → 답변을 구조화</td><td>활동 가중치 · 하드 제약</td></tr>
       <tr><td class="k">③ 공간 플래너 <span style="font-weight:500;color:var(--muted)">(비AI)</span></td><td>최적화로 후보 생성, 기하 연산으로 충돌·통로·문 개폐 검증</td><td>검증된 배치안 2개</td></tr>
     </table>
     <div class="chain">
       <div class="c ai"><b>사진 단서 (VLM)</b>책상 위 모니터 2대, 침대 맞은편 책상</div><div class="x">→</div>
-      <div class="c ai"><b>가설 (에이전트)</b>재택근무 비중 높음, 업무·수면 시야 간섭</div><div class="x">→</div>
-      <div class="c ai"><b>확인 질문</b>“화상회의 때 침대가 화면에 보이나요?”</div><div class="x">→</div>
+      <div class="c ai"><b>추정 (VLM)</b>주 활동 업무, 업무·수면 분리 필요</div><div class="x">→</div>
+      <div class="c ai"><b>확인 카드</b>“책상 위 모니터 2대 → 업무 위주가 맞나요?”</div><div class="x">→</div>
       <div class="c det"><b>제약 (플래너)</b>업무·수면 영역 분리 가중치 상향</div>
     </div>
   </div>
@@ -232,62 +232,60 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
         <defs>
           <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#667085"/></marker>
         </defs>
-        <!-- PWA -->
+        <!-- Web -->
         <rect x="10" y="14" width="410" height="92" rx="10" fill="#fff" stroke="#1f2a44" stroke-width="1.6"/>
-        <text x="28" y="44" font-size="17" font-weight="700" fill="#1f2a44">모바일 웹 (PWA) · Vue 3 · Konva</text>
-        <text x="28" y="70" font-size="14" fill="#2b3445">사진 업로드 · 확인 질문 · 2D 터치 편집</text>
-        <text x="28" y="92" font-size="14" fill="#2b3445">배치안 비교 · 위반 표시 · 이동 가이드</text>
-        <!-- iOS -->
+        <text x="28" y="44" font-size="17" font-weight="700" fill="#1f2a44">모바일 웹 · Vue 3 · Konva</text>
+        <text x="28" y="70" font-size="14" fill="#2b3445">방 사진 선택 · 확인 질문 · 2D 터치 편집</text>
+        <text x="28" y="92" font-size="14" fill="#2b3445">배치안 비교 · 위반·활동 영역 표시 · 이동 가이드</text>
+        <!-- iOS (future) -->
         <rect x="460" y="14" width="230" height="92" rx="10" fill="#fff" stroke="#3d5a80" stroke-width="1.4" stroke-dasharray="5 4"/>
-        <text x="476" y="44" font-size="16" font-weight="700" fill="#3d5a80">iOS RoomPlan (선택)</text>
+        <text x="476" y="44" font-size="16" font-weight="700" fill="#3d5a80">iOS RoomPlan (향후)</text>
         <text x="476" y="70" font-size="14" fill="#2b3445">LiDAR 스캔 → 벽·문·창</text>
-        <text x="476" y="92" font-size="14" fill="#2b3445">가구 치수 JSON 내보내기</text>
-        <line x1="458" y1="60" x2="424" y2="60" stroke="#667085" stroke-width="1.5" marker-end="url(#ah)"/>
-        <text x="427" y="52" font-size="11" fill="#667085">JSON</text>
+        <text x="476" y="92" font-size="14" fill="#2b3445">가구 치수 JSON 입력</text>
         <!-- API -->
         <line x1="215" y1="108" x2="215" y2="146" stroke="#667085" stroke-width="1.5" marker-end="url(#ah)" marker-start="url(#ah)"/>
         <rect x="10" y="150" width="680" height="76" rx="10" fill="#f4f6fa" stroke="#1f2a44" stroke-width="1.6"/>
-        <text x="28" y="180" font-size="17" font-weight="700" fill="#1f2a44">FastAPI 백엔드 (Cloud Run)</text>
-        <text x="28" y="206" font-size="14" fill="#2b3445">세션 · 입력 정규화(사진/스캔/수동 → 동일 2D 모델, cm) · 공간 모델 API</text>
+        <text x="28" y="180" font-size="17" font-weight="700" fill="#1f2a44">FastAPI 백엔드 (로컬 실행)</text>
+        <text x="28" y="206" font-size="14" fill="#2b3445">세션 · 입력 정규화(사진/수동 → 동일 2D 모델, cm) · 공간 모델 API</text>
         <!-- arrows down -->
         <line x1="175" y1="228" x2="175" y2="268" stroke="#667085" stroke-width="1.5" marker-end="url(#ah)" marker-start="url(#ah)"/>
         <line x1="525" y1="228" x2="525" y2="268" stroke="#667085" stroke-width="1.5" marker-end="url(#ah)" marker-start="url(#ah)"/>
         <!-- Agent -->
         <rect x="10" y="272" width="330" height="108" rx="10" fill="#fff" stroke="#f26b3a" stroke-width="1.8"/>
-        <text x="26" y="300" font-size="16" font-weight="700" fill="#c2410c">AI 에이전트 (LangGraph)</text>
-        <text x="26" y="325" font-size="14" fill="#2b3445">생활 단서 → 불편 가설</text>
-        <text x="26" y="347" font-size="14" fill="#2b3445">→ 확인 질문 선택 (최대 3개)</text>
+        <text x="26" y="300" font-size="16" font-weight="700" fill="#c2410c">확인 질문 (질문 뱅크)</text>
+        <text x="26" y="325" font-size="14" fill="#2b3445">생활 단서 → 확인 카드</text>
+        <text x="26" y="347" font-size="14" fill="#2b3445">→ 빈 항목 질문 (합계 최대 3개)</text>
         <text x="26" y="369" font-size="14" fill="#2b3445">→ 활동 가중치 · 하드 제약</text>
         <!-- VLM -->
         <line x1="175" y1="382" x2="175" y2="408" stroke="#667085" stroke-width="1.5" marker-end="url(#ah)" marker-start="url(#ah)"/>
         <rect x="10" y="412" width="330" height="68" rx="10" fill="#fdeee7" stroke="#f26b3a" stroke-width="1.4"/>
-        <text x="26" y="440" font-size="16" font-weight="700" fill="#c2410c">멀티모달 VLM API</text>
+        <text x="26" y="440" font-size="16" font-weight="700" fill="#c2410c">로컬 VLM (Qwen3-VL-8B · MLX)</text>
         <text x="26" y="464" font-size="14" fill="#2b3445">가구 · 생활 흔적 · 가구 속성 추출</text>
         <!-- Planner -->
         <rect x="360" y="272" width="330" height="208" rx="10" fill="#fff" stroke="#1f2a44" stroke-width="1.8"/>
         <text x="376" y="300" font-size="16" font-weight="700" fill="#1f2a44">Spatial Planner (결정적 계산)</text>
-        <text x="376" y="328" font-size="14" font-weight="700" fill="#2b3445">OR-Tools CP-SAT</text>
+        <text x="376" y="328" font-size="14" font-weight="700" fill="#2b3445">휴리스틱 탐색 (벽 정렬 후보 + 빔 서치)</text>
         <text x="376" y="350" font-size="14" fill="#2b3445">배치 후보 2개 생성 (선호 우선 / 이동 최소)</text>
         <text x="376" y="380" font-size="14" font-weight="700" fill="#2b3445">Shapely</text>
         <text x="376" y="402" font-size="14" fill="#2b3445">가구 충돌 · 사용 공간 · 문 회전 반경</text>
         <text x="376" y="424" font-size="14" fill="#2b3445">통로 폭 · 활동 영역 간섭 검증</text>
-        <text x="376" y="458" font-size="13" fill="#667085">편집 시 재검증 목표 1초 이내</text>
+        <text x="376" y="458" font-size="13" fill="#667085">편집 시 재검증 p95 0.9ms (실측)</text>
         <!-- agent -> planner -->
         <line x1="342" y1="326" x2="358" y2="326" stroke="#667085" stroke-width="1.5" marker-end="url(#ah)"/>
       </svg>
-      <div class="legend"><span style="color:var(--accent);font-weight:700">■</span> AI가 추정·해석하는 영역 &nbsp; <span style="color:var(--navy);font-weight:700">■</span> 규칙·최적화로 보장하는 영역 &nbsp; ┅ 선택 입력</div>
+      <div class="legend"><span style="color:var(--accent);font-weight:700">■</span> AI가 추정·해석하는 영역 &nbsp; <span style="color:var(--navy);font-weight:700">■</span> 규칙·최적화로 보장하는 영역 &nbsp; ┅ 향후 입력</div>
     </div>
     <div>
       <div class="strong" style="font-size:19px;margin:2px 0 10px">기술 스택</div>
       <table class="t">
         <tr><th style="width:140px">구분</th><th>내용</th></tr>
-        <tr><td class="k">프론트/클라이언트</td><td>Vue 3, Konva(2D 캔버스), PWA</td></tr>
-        <tr><td class="k">백엔드/에이전트</td><td>FastAPI, LangGraph</td></tr>
-        <tr><td class="k">공간 엔진</td><td>OR-Tools CP-SAT, Shapely</td></tr>
-        <tr><td class="k">AI 모델</td><td><span class="todo">[작성] 멀티모달 VLM·LLM 모델명·버전</span></td></tr>
-        <tr><td class="k">외부 API</td><td><span class="todo">[작성] VLM 추론 API 제공사</span><br>Apple RoomPlan (iOS 16+, LiDAR, 선택)</td></tr>
-        <tr><td class="k">데이터 (출처·라이선스)</td><td>팀 자체 제작 합성 방 3종, 촬영 허가받은 실제 방 스캔 1종</td></tr>
-        <tr><td class="k">배포 환경</td><td>Cloudflare Pages (웹), Google Cloud Run (API)</td></tr>
+        <tr><td class="k">프론트/클라이언트</td><td>Vue 3, Konva(2D 캔버스), Vite</td></tr>
+        <tr><td class="k">백엔드</td><td>FastAPI</td></tr>
+        <tr><td class="k">공간 엔진</td><td>Shapely, 휴리스틱 배치 탐색(자체 구현)</td></tr>
+        <tr><td class="k">AI 모델</td><td>Qwen3-VL-8B-Instruct 4bit (mlx-community), mlx-vlm 로컬 추론</td></tr>
+        <tr><td class="k">외부 API</td><td>없음 (사진은 외부로 전송하지 않음)</td></tr>
+        <tr><td class="k">데이터 (출처·라이선스)</td><td>팀 자체 제작 합성 방 3종 (FLUX.1-schnell 생성, Apache-2.0)</td></tr>
+        <tr><td class="k">배포 환경</td><td>로컬 실행 (Apple Silicon Mac) + 시연 영상</td></tr>
       </table>
     </div>
   </div>
@@ -302,7 +300,7 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
       <span class="label">핵심 기능 1</span>
       <h3>공간 이해</h3>
       <ul class="b" style="font-size:16px">
-        <li>사진·RoomPlan 스캔·수동 입력을 <span class="strong">동일한 2D 모델(cm)</span>로 정규화</li>
+        <li>사진 추정·수동 입력을 <span class="strong">동일한 2D 모델(cm)</span>로 정규화</li>
         <li>방·문·창·고정 구조물(싱크대 등)·가구 8종</li>
         <li>AI 추정값은 “추정”으로 표시, 사용자가 확정</li>
       </ul>
@@ -329,7 +327,7 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
   <div class="card" style="height:186px">
     <h3>주요 사용자 이용 흐름 (Happy Path)</h3>
     <div class="flow" style="margin-top:12px">
-      <div class="st"><b>STEP 1</b>방 사진 업로드<br>(또는 스캔)</div><div class="ar">→</div>
+      <div class="st"><b>STEP 1</b>방 사진<br>선택</div><div class="ar">→</div>
       <div class="st"><b>STEP 2</b>가구·치수<br>확인·보정</div><div class="ar">→</div>
       <div class="st"><b>STEP 3</b>AI 확인 질문<br>2~3개</div><div class="ar">→</div>
       <div class="st"><b>STEP 4</b>배치안 2개<br>점수·위반 비교</div><div class="ar">→</div>
@@ -368,74 +366,31 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
   <h1><span class="n">07</span>구현 현황 및 프로토타입</h1>
   <div style="display:grid;grid-template-columns:300px 1fr;gap:24px">
     <div>
-      <svg viewBox="0 0 300 540" width="300" height="540" font-family="Noto Sans KR, sans-serif" role="img" aria-label="배치안 비교 화면 목업">
-        <rect x="6" y="2" width="288" height="534" rx="30" fill="#1f2a44"/>
-        <rect x="18" y="16" width="264" height="506" rx="20" fill="#fff"/>
-        <text x="34" y="50" font-size="14" font-weight="700" fill="#1f2a44">배치안 비교</text>
-        <rect x="34" y="62" width="112" height="28" rx="14" fill="#f26b3a"/>
-        <text x="90" y="81" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">A 선호 우선</text>
-        <rect x="152" y="62" width="112" height="28" rx="14" fill="#eef1f6"/>
-        <text x="208" y="81" font-size="12" fill="#3d5a80" text-anchor="middle">B 이동 최소</text>
-        <!-- room 320x280cm -> 232x203 -->
-        <g transform="translate(34,104)">
-          <rect x="0" y="0" width="232" height="203" fill="#fafbfd" stroke="#1f2a44" stroke-width="3"/>
-          <!-- zones -->
-          <rect x="2" y="2" width="96" height="160" fill="#3d5a80" fill-opacity=".10"/>
-          <rect x="140" y="110" width="90" height="91" fill="#f26b3a" fill-opacity=".12"/>
-          <!-- sink fixture -->
-          <rect x="188" y="2" width="42" height="44" fill="#d9dee7"/>
-          <text x="209" y="28" font-size="9" fill="#667085" text-anchor="middle">싱크</text>
-          <!-- door at bottom-left wall: gap + arc -->
-          <line x1="22" y1="203" x2="80" y2="203" stroke="#fafbfd" stroke-width="4"/>
-          <path d="M22,203 L22,145 A58,58 0 0 1 80,203" fill="none" stroke="#667085" stroke-dasharray="3 3"/>
-          <!-- window right wall -->
-          <line x1="232" y1="60" x2="232" y2="140" stroke="#7fb3d5" stroke-width="5"/>
-          <!-- bed -->
-          <rect x="4" y="6" width="72" height="140" rx="4" fill="#fff" stroke="#3d5a80" stroke-width="1.6"/>
-          <text x="40" y="80" font-size="11" fill="#3d5a80" text-anchor="middle">침대</text>
-          <!-- desk near window -->
-          <rect x="196" y="120" width="34" height="76" rx="3" fill="#fff" stroke="#f26b3a" stroke-width="1.6"/>
-          <text x="213" y="162" font-size="10" fill="#c2410c" text-anchor="middle">책상</text>
-          <circle cx="178" cy="158" r="10" fill="#fff" stroke="#f26b3a" stroke-width="1.4"/>
-          <!-- wardrobe -->
-          <rect x="104" y="4" width="78" height="40" rx="3" fill="#fff" stroke="#667085" stroke-width="1.4"/>
-          <text x="143" y="28" font-size="10" fill="#667085" text-anchor="middle">옷장</text>
-          <!-- aisle hint -->
-          <path d="M51,196 C80,170 110,120 160,140" fill="none" stroke="#2f7d5b" stroke-width="2" stroke-dasharray="5 4"/>
-        </g>
-        <!-- metrics -->
-        <g font-size="12" fill="#2b3445">
-          <rect x="34" y="320" width="232" height="104" rx="10" fill="#f4f6fa"/>
-          <text x="46" y="343">총점</text><text x="254" y="343" text-anchor="end" font-weight="700" fill="#1f2a44">82 (+27)</text>
-          <text x="46" y="364">하드 위반</text><text x="254" y="364" text-anchor="end" font-weight="700" fill="#2f7d5b">0건 (기준 2건)</text>
-          <text x="46" y="385">업무·수면 간섭</text><text x="254" y="385" text-anchor="end" font-weight="700" fill="#2f7d5b">해소</text>
-          <text x="46" y="406">이동 가구</text><text x="254" y="406" text-anchor="end" font-weight="700" fill="#1f2a44">2개</text>
-        </g>
-        <rect x="34" y="438" width="232" height="38" rx="10" fill="#1f2a44"/>
-        <text x="150" y="462" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">이 배치로 이동 순서 보기</text>
-        <text x="150" y="500" font-size="10.5" fill="#667085" text-anchor="middle">화면 목업 · 수치는 예시</text>
-      </svg>
+      <div style="width:300px;height:504px;overflow:hidden;border-radius:16px;border:1px solid var(--line)">
+        <img src="screens/compare-room-b.jpg" alt="배치안 비교 실제 화면 (합성 방 B)" style="width:945px;margin-left:-318px;display:block">
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px;text-align:center">실제 화면 · 합성 방 B 배치안 비교</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="card" style="padding:16px 22px">
-        <h3>현재 상태 <span class="todo" style="font-size:14px">[제출 전 실제 진척·화면으로 갱신]</span></h3>
+        <h3>현재 상태</h3>
         <ul class="b" style="font-size:16px;line-height:1.6">
-          <li><span class="tag done">완료</span>문제 정의, 요구사항 정의서, 2D 공간 데이터 모델·API 계약, 6.5일 개발 계획</li>
-          <li><span class="tag wip">개발</span>2D 편집기 · 기하 검증 엔진 · 배치 후보 생성 · VLM 단서 추출 · 질문 에이전트 · 이동 가이드</li>
-          <li><span class="tag opt">선택</span>iOS RoomPlan 스캔 가져오기 (핵심 흐름 완성 후 착수)</li>
+          <li><span class="tag done">완료</span>2D 편집기 · 기하 검증 엔진 · 배치 후보 생성 · 로컬 VLM 단서 추출 · 확인 질문 · 이동 가이드 · 활동 영역 표시</li>
+          <li><span class="tag wip">한계</span>사진은 합성 방 3종에서 선택 (임의 사진 업로드 미구현)</li>
+          <li><span class="tag opt">제외</span>iOS RoomPlan 스캔 (08 확장 가능성으로 이동)</li>
         </ul>
       </div>
       <div class="card" style="padding:16px 22px">
-        <h3>검증 계획 <span style="font-size:14px;color:var(--muted);font-weight:500">(목표치, 실적 아님)</span></h3>
+        <h3>검증 결과 <span style="font-size:14px;color:var(--muted);font-weight:500">(합성 방 3종 실측)</span></h3>
         <table class="t" style="font-size:14.5px">
-          <tr><th style="width:170px">항목</th><th>통과 기준</th></tr>
-          <tr><td class="k">배치 개선</td><td>합성 방 3종 모두 하드 위반 0건 + 선호 점수 ≥ 기준 배치인 후보 1개 이상</td></tr>
-          <tr><td class="k">재검증 속도</td><td>가구 15개 이하에서 p95 1초 미만</td></tr>
-          <tr><td class="k">VLM 단서 효과</td><td>슬롯 사전 추정 정확도 60% 이상, VLM 미사용 대비 필요 질문 수 감소</td></tr>
-          <tr><td class="k">장애 대응</td><td>VLM 비활성 상태에서 수동 입력만으로 전체 흐름 완료</td></tr>
+          <tr><th style="width:130px">항목</th><th>통과 기준</th><th style="width:250px">실측</th></tr>
+          <tr><td class="k">배치 개선</td><td>3종 모두 하드 위반 0건 + 선호 점수 ≥ 기준 배치</td><td>통과: 위반 2~3건 → 0건</td></tr>
+          <tr><td class="k">재검증 속도</td><td>가구 15개 이하에서 p95 1초 미만</td><td>통과: p95 최대 0.9ms</td></tr>
+          <tr><td class="k">VLM 단서 효과</td><td>단서 추정 60% 이상, 필요 질문 수 감소</td><td>가구 재현율 85%, 단서 재현율 67%<br>질문 3개로 확정 항목 3 → 5개</td></tr>
+          <tr><td class="k">장애 대응</td><td>VLM 비활성 상태에서 전체 흐름 완료</td><td>VLM 실패 시 자동 대체 경로 구현</td></tr>
         </table>
       </div>
-      <div style="font-size:13.5px;color:var(--muted)">데모는 팀이 제작한 합성 방 3종(업무 우선·수면 우선·이동 최소 시나리오)과 촬영 허가받은 공간만 사용한다.</div>
+      <div style="font-size:13.5px;color:var(--muted)">데모·측정은 팀이 제작한 합성 방 3종(업무 우선·수면 우선·이동 최소 시나리오)만 사용했다. VLM 추론은 사진 1장당 약 10~11초 (로컬, Qwen3-VL-8B 4bit).</div>
     </div>
   </div>
   <div class="foot"><span>2026 대한민국 청년 CAREER FAIR AI 해커톤 | Rooming × SpaceAdapt</span><span>8</span></div>
@@ -450,7 +405,7 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
   </div>
   <div class="grid g2">
     <div class="card" style="height:300px">
-      <h3>정량 검증 지표 <span style="font-size:14px;color:var(--muted);font-weight:500">(계획)</span></h3>
+      <h3>정량 검증 지표 <span style="font-size:14px;color:var(--muted);font-weight:500">(07 실측 참조)</span></h3>
       <ul class="b">
         <li>하드 제약 위반 수 (충돌·문 개폐·통로·사용 공간) — 기준 배치 대비</li>
         <li>업무·수면 등 활동 영역 간섭 면적</li>
@@ -465,7 +420,8 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
         <li><span class="strong">입주 전 시뮬레이션</span> — 계약 전 평면과 내 가구로 배치 가능 여부 확인</li>
         <li><span class="strong">가구 구매 적합성 검사</span> — 사려는 가구가 들어가는지, 통로가 남는지</li>
         <li><span class="strong">기숙사·셰어하우스</span> — 호실 유형별 권장 배치 가이드</li>
-        <li><span class="strong">기술 확장</span> — AR 배치 미리보기, 온디바이스 VLM</li>
+        <li><span class="strong">스캔 입력</span> — iOS RoomPlan(LiDAR)으로 벽·문·가구 치수 자동 입력</li>
+        <li><span class="strong">기술 확장</span> — AR 배치 미리보기, 모바일 온디바이스 VLM</li>
       </ul>
     </div>
   </div>
@@ -480,32 +436,29 @@ table.cmp .us{background:var(--accent-soft);font-weight:700;color:var(--accent)}
       <div class="strong" style="font-size:16px;margin-bottom:8px">팀 구성 및 역할</div>
       <table class="t" style="font-size:14px">
         <tr><th style="width:110px">이름</th><th style="width:110px">역할</th><th>담당 업무</th></tr>
-        <tr><td class="todo">[작성] 대표자</td><td class="todo">[작성]</td><td>예: 기획 · 발표 · 통합 QA</td></tr>
-        <tr><td class="todo">[작성]</td><td>프론트엔드</td><td>모바일 웹, 2D 편집기, 비교 화면</td></tr>
-        <tr><td class="todo">[작성]</td><td>공간 엔진</td><td>배치 생성, 기하 검증, 백엔드 API</td></tr>
-        <tr><td class="todo">[작성]</td><td>AI · iOS</td><td>VLM 단서 추출, 질문 에이전트, RoomPlan</td></tr>
+        <tr><td>정은희</td><td>1인 전담</td><td>기획 · 모바일 웹 · 2D 편집기 · 배치 생성 · 기하 검증 · 백엔드 API · VLM 단서 추출 · 확인 질문 · 측정</td></tr>
       </table>
     </div>
     <div>
       <div class="strong" style="font-size:16px;margin-bottom:8px">기존 개발물 · 사전 개발 내역</div>
       <table class="t" style="font-size:14px">
         <tr><th style="width:170px">구분</th><th>내용</th></tr>
-        <tr><td class="k">해커톤 이전 개발 범위</td><td class="todo">[확인] 없으면 “해당 없음”</td></tr>
+        <tr><td class="k">해커톤 이전 개발 범위</td><td>해당 없음</td></tr>
         <tr><td class="k">해커톤 기간 중 개발 범위</td><td>기획·설계 문서 및 본문 07의 전체 기능</td></tr>
-        <tr><td class="k">타 공모전 출품·수상 여부</td><td class="todo">[확인] 없으면 “해당 없음”</td></tr>
+        <tr><td class="k">타 공모전 출품·수상 여부</td><td>해당 없음</td></tr>
       </table>
     </div>
   </div>
   <div class="strong" style="font-size:16px;margin-bottom:8px">활용한 외부 자원 · 출처</div>
   <table class="t" style="font-size:13.5px">
     <tr><th style="width:150px">구분</th><th style="width:330px">명칭</th><th>출처 · 라이선스</th><th style="width:230px">사용 위치</th></tr>
-    <tr><td class="k">오픈소스 · 템플릿</td><td>Vue 3 · Konva · FastAPI · LangGraph</td><td>각 공식 저장소 · MIT</td><td>웹 클라이언트 · 백엔드 · 에이전트</td></tr>
-    <tr><td class="k"></td><td>Shapely · Google OR-Tools</td><td>BSD-3-Clause · Apache-2.0</td><td>공간 검증 · 배치 최적화</td></tr>
-    <tr><td class="k">외부 데이터 · API</td><td><span class="todo">[작성] VLM 추론 API</span> · Apple RoomPlan</td><td><span class="todo">[작성] 이용약관</span> · Apple iOS SDK</td><td>사진 단서 추출 · 스캔 입력(선택)</td></tr>
-    <tr><td class="k"></td><td>합성 방 이미지 3종</td><td>팀 자체 제작 <span class="todo">[생성 도구 기재]</span></td><td>데모 · 검증</td></tr>
-    <tr><td class="k">AI 모델 · 개발 도구</td><td><span class="todo">[작성] VLM·LLM 모델명·버전</span> · Claude Code</td><td><span class="todo">[작성] 제공사</span> · Anthropic</td><td>단서 추출·질문 · 문서·코드 작성 보조</td></tr>
+    <tr><td class="k">오픈소스 · 템플릿</td><td>Vue 3 · Konva · vue-konva · FastAPI · mlx-vlm</td><td>각 공식 저장소 · MIT</td><td>웹 클라이언트 · 백엔드 · VLM 추론</td></tr>
+    <tr><td class="k"></td><td>Shapely</td><td>BSD-3-Clause</td><td>공간 검증</td></tr>
+    <tr><td class="k">외부 데이터 · API</td><td>외부 API 사용 없음</td><td>—</td><td>—</td></tr>
+    <tr><td class="k"></td><td>합성 방 이미지 3종</td><td>팀 자체 제작 (FLUX.1-schnell via mflux, Apache-2.0)</td><td>데모 · 검증</td></tr>
+    <tr><td class="k">AI 모델 · 개발 도구</td><td>Qwen3-VL-8B-Instruct 4bit (mlx-community) · Claude Code</td><td>Alibaba Qwen, Apache-2.0 · Anthropic</td><td>단서 추출 · 문서·코드 작성 보조</td></tr>
   </table>
-  <div style="font-size:13px;color:var(--muted);margin-top:10px">개인정보: 업로드 사진은 분석 후 저장하지 않으며, 데모는 합성·허가 자료로만 구성한다.</div>
+  <div style="font-size:13px;color:var(--muted);margin-top:10px">개인정보: 사진은 로컬 모델로만 분석하며 외부 서버로 전송하지 않는다. 데모는 합성 자료로만 구성한다.</div>
   <div class="foot"><span>2026 대한민국 청년 CAREER FAIR AI 해커톤 | Rooming × SpaceAdapt</span><span></span></div>
 </section>
 
